@@ -90,10 +90,7 @@ export default {
                 spaceBetween:10,
                 loopedSlides: 5,
                 freeMode: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true
-                }
+                
             },
             camptions:[
                 {
@@ -142,6 +139,7 @@ export default {
         }
     },
     created(){
+        console.log(this.$route)
         this.swiperOption.autoplay =  this.camptions.length != 1 ? {
             direction: 'vertical',
             centeredSlides: true,
@@ -249,6 +247,7 @@ export default {
         width: 100%;
         padding: 10px;
         box-sizing: border-box;
+        padding-bottom: 5px;
         .swiper-mag{
             width: auto;
         }
