@@ -1,8 +1,8 @@
 <template>
   <div id="app">
      <router-view/>
-    <tabbar>
-      <tabbarItem v-for="item in tabbarList" :key="item.text" :link="item.link" :normalColor="normalColor" :activeColor="activeColor">
+    <tabbar v-if="this.$route.name == 'home' || this.$route.name == 'magazine' || this.$route.name == 'ucenter' ">
+      <tabbarItem  v-for="item in tabbarList" :key="item.text" :link="item.link" :normalColor="normalColor" :activeColor="activeColor">
         <img :src="item.normalImg" alt="" slot="item-icon">
         <img :src="item.activeImg" alt="" slot="item-icon-active">
         <div slot="item-text">{{item.text}}</div>
@@ -45,7 +45,8 @@ export default {
   components:{
     tabbar,
     tabbarItem
-  }
+  },
+  
 }
 </script>
 

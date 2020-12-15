@@ -1,11 +1,12 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" ref="wrapper">
       <slot></slot>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
+
 export default {
     name: 'scroll',
     props: {
@@ -72,7 +73,8 @@ export default {
             this.scroll = new BScroll(this.$refs.wrapper, {
                 probeType: this.probeType,
                 click: this.click,
-                scrollX: this.scrollX
+                scrollX: this.scrollX,
+                bounce:200
             })
             // 是否派发滚动事件
             if (this.listenScroll) {
@@ -129,6 +131,7 @@ export default {
       // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
       data() {
         setTimeout(() => {
+            console.log('refresh')
           this.refresh()
         }, this.refreshDelay)
       }

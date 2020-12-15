@@ -1,5 +1,5 @@
 <template>
-  <div class="mag-group" @click="magClick(mag.magazine_id)">
+  <div class="mag-group" @click="magClick(mag.magazine_id)" :style="{width: magwidth + 'px'}">
       <img :src="mag.logo" alt="">
       <p class="title">{{mag.main_title}}</p>
       <p class="subtitle">{{mag.sub_title}}</p>
@@ -15,6 +15,10 @@ export default {
             default:function () {
                 return { }
             }
+        },
+        magwidth:{
+            type: Number,
+            default: 120
         }
     },
     methods:{
@@ -30,6 +34,9 @@ export default {
     width: 120px;
     display: flex;
     flex-direction: column;
+    background-color: #eeeeee;
+    // border: 1px solid #eeeeee;
+    box-shadow: 0 0 5px 5px #ffffff;
     img{
         width: 100%;
     }
@@ -37,7 +44,8 @@ export default {
         font-size: 16px;
         color: #333333;
         font-weight: bold;
-        padding: 5px;
+        padding-top: 5px;
+        padding-left: 5px;
     }
     .subtitle{
         font-size: 14px;
