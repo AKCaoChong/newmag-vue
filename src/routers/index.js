@@ -5,11 +5,29 @@ import home from './home'
 import kan from './kan'
 import ucenter from './ucenter'
 import login from './login'
+import kanDetail from './kanDetail'
+import address from './myAddress'
+import myMag from './myMag'
+import myCollect from './myCollect'
+import codeList from './codeList'
+
 Vue.use(VueRouter)
 
 
 const routes = [
-  home,kan,ucenter,login
+  home,kan,ucenter,login,kanDetail,address,myMag,myCollect,codeList,
+  {
+    path:'/magazine/search',
+    component: () => import('../views/magSearch'),
+    meta:{
+      title: '搜索'
+    },
+    name:'search'
+  },
+  {
+    path:'/*',
+    redirect:'/home' //重定向一定要写到最下边
+  },
 ]
 
 const router = new VueRouter({
@@ -30,6 +48,7 @@ router.beforeEach((to,from,next) => {
     })
   }else{
     next()
+    console.log(to)
   }
   
 })

@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-     <router-view/>
-    <tabbar v-if="this.$route.name == 'home' || this.$route.name == 'magazine' || this.$route.name == 'ucenter' ">
+    <transition name="fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
+    <tabbar v-if="this.$route.name == 'home' || this.$route.name == 'magazine' || this.$route.name == 'ucenter'">
       <tabbarItem  v-for="item in tabbarList" :key="item.text" :link="item.link" :normalColor="normalColor" :activeColor="activeColor">
         <img :src="item.normalImg" alt="" slot="item-icon">
         <img :src="item.activeImg" alt="" slot="item-icon-active">
@@ -39,14 +41,29 @@ export default {
           activeImg:require("./assets/img/tabbar/my_sel.png"),
           text:"我的"
         }
-      ]
+      ],
+      transition:''
     }
   },
   components:{
     tabbar,
     tabbarItem
   },
-  
+  beforeRouteUpdate (to, from, next) {
+    const toDepth = to.path.split('/').length
+    const fromDepth = from.path.split('/').length
+    this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    next()
+  },
+  created(){
+    if (window.localStorage.getItem("minemag") ) {
+        this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(window.localStorage.getItem("minemag"))))
+    } 
+
+    window.addEventListener("beforeunload",()=>{
+      window.localStorage.setItem("minemag",JSON.stringify(this.$store.state))
+    })
+  },
 }
 </script>
 
@@ -69,5 +86,42 @@ html,body,#app{
   // display: flex;
   // flex-direction: column;
   // box-sizing: border-box;
+}
+
+.fade-enter-active, .fade-leave-active{
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to{
+  opacity: 0;
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  will-change: transform;
+  transition: all 500ms;
+  position:absolute;
+}
+
+.slide-right-enter {
+  opacity: 0;
+  transform: translate(-100%);
+}
+
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.slide-left-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translateX(-100%);
 }
 </style>

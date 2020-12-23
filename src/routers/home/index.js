@@ -1,15 +1,9 @@
 export default  {
-    path: "/",
+    path: "/home",
     component: () => import('../../views/home'),
     meta:{
         title:'首页',
         requiredAuth: true
     },
-    name:'home',
-    children:[
-        {
-            path:'home',
-            redirect:'/'
-        }
-    ]
+    name:'home'
 }

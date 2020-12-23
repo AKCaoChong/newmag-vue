@@ -116,6 +116,15 @@ class Auth {
     localStorage.setItem(TOKEN_KEY, token)
   }
 
+  getUser(){
+    let user = JSON.parse(localStorage.getItem(USER_KEY))
+    return user
+  }
+
+  getToken(){
+    return localStorage.getItem(TOKEN_KEY)
+  }
+
   clearUserToken() {
     this.user = null;
     this.token = null;

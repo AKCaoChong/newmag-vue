@@ -1,6 +1,6 @@
 <template>
-  <div class="mag-group" @click="magClick(mag.magazine_id)" :style="{width: magwidth + 'px'}">
-      <img :src="mag.logo" alt="">
+  <div class="mag-group" @click="magClick(mag.magazine_id)" :style="{width: magwidth + 'px',height: magheight + 'px'}">
+      <img :src="mag.logo" alt=""  :style="{maxHeight: magwidth *  1.28 + 'px'}">
       <p class="title">{{mag.main_title}}</p>
       <p class="subtitle">{{mag.sub_title}}</p>
   </div>
@@ -19,6 +19,10 @@ export default {
         magwidth:{
             type: Number,
             default: 120
+        },
+        magheight:{
+            type: Number,
+            default: 210
         }
     },
     methods:{

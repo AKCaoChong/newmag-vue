@@ -1,18 +1,18 @@
 import axios from 'axios'
 import toast from '../components/toast'
-
-const DEV_BASE_URL = "";
-const DEBUG_BASE_URL = "";
-const PRO_BASE_URL = "";
+import qs from 'qs'
+const DEV_BASE_URL = "/dev_url";
+const DEBUG_BASE_URL = "https://zine.rayligirl.com/";
+const PRO_BASE_URL = "https://zine.rayligirl.com/";
 // 创建 axios 实例
 const service = axios.create({
-    // 配置项
+    // 配置项  'Content-Type': 'application/json;charset=utf-8'   'Content-Type': 'multipart/form-data'
     headers:{
         get:{
             'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
         },
         post:{
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
         }
     },
     // 跨域请求是否需要使用凭证
@@ -32,6 +32,10 @@ service.interceptors.request.use(
     config =>{
         const token = ''
         token && (config.headers.Authorization = token)
+        if (config.method  === 'post') {
+            console.log(config.data)
+            config.data = qs.stringify(config.data)
+        }
         return config
     },
     error => {
@@ -58,16 +62,17 @@ const errorHandler = status => {
                 text:'404',
             })
             break
+        case 407:
+            toast({
+                text:'没有数据',
+            })
+            break
         case 500:
             toast({
                 text:'500',
             })
             break
-        default:
-            toast({
-                text:'连接错误',
-            })
-            break
+       
     }
 }
 
@@ -75,8 +80,10 @@ const errorHandler = status => {
 service.interceptors.response.use( 
     response => {
         if(response.status === 200){
-            return Promise.resolve(response)
+            errorHandler(response.data.code)
+            return Promise.resolve(response.data)
         }else{
+            errorHandler(response.data.code)
             return Promise.reject(response)
         }
     },
