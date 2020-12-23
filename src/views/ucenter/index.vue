@@ -6,13 +6,20 @@
           <img :src="user.head" alt="" class="info-head" />
           <p class="info-name">{{ user.name }}</p>
           <div class="info-list">
-            <div class="info-tag" v-for="tag in tagList" :key="tag.id">
+            <router-link :to="tag.path" tag="div" class="info-tag" v-for="tag in tagList" :key="tag.id">
               <div class="left-tag" :style="{'width': tagw+'px'}">
                 <img :src="tag.img" alt="" />
                 <p class="tag-title">{{ tag.title }}</p>
               </div>
               <div class="right-line"></div>
-            </div>
+            </router-link>
+            <!-- <div class="info-tag" v-for="tag in tagList" :key="tag.id">
+              <div class="left-tag" :style="{'width': tagw+'px'}">
+                <img :src="tag.img" alt="" />
+                <p class="tag-title">{{ tag.title }}</p>
+              </div>
+              <div class="right-line"></div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -44,21 +51,25 @@ export default {
           img: require("@/assets/img/mine_mag.png"),
           title: "我的期刊",
           id: "0",
+          path:'/ucenter/magazine'
         },
         {
           img: require("@/assets/img/mine_collect.png"),
           title: "我的收藏",
           id: "1",
+          path:'/ucenter/collect'
         },
         {
           img: require("@/assets/img/mine_addr.png"),
           title: "我的地址",
           id: "2",
+          path:'/ucenter/address'
         },
         {
           img: require("@/assets/img/mine_model.png"),
           title: "明星电子刊",
           id: "3",
+          path:'/ucenter/address'
         },
       ],
       selList:[
@@ -96,7 +107,8 @@ export default {
       this.$api.login.getLogin(data).then(res => {
         console.login(res)
       })
-    }
+    },
+    
   },
 
   components: {

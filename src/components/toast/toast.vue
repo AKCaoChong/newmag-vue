@@ -19,6 +19,7 @@ export default {
     transform: translate(-50%,-50%);
     color: #333333;
     font-size: 18px;
+    z-index: 10000;
 }
 .info{
     background: #00aaee;

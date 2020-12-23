@@ -12,7 +12,7 @@
             <div class="camption-group">
                 <swiper class="swiper" :options="swiperOption">
                     <swiper-slide v-for="camp in camptions" :key="camp.id" class="swiper-item">
-                        <p>{{camp.title}}</p>
+                        <p>{{camp.campaign_title}}</p>
                     </swiper-slide>
                 </swiper>
             </div>
@@ -20,8 +20,8 @@
             <div class="sub-title">最新期刊</div>
             <div class="mag-list">
                 <swiper class="list-swiper" :options="listSwiperOpt">
-                    <swiper-slide v-for="mag in maglist" :key="mag.id" class="swiper-mag">
-                        <magazine :mag="mag" @magClick="readClick"></magazine>
+                    <swiper-slide v-for="mag in maglist" :key="mag.magazine_id" class="swiper-mag">
+                        <magazine :mag="mag" @magClick="readClick(mag.magazine_id)"></magazine>
                     </swiper-slide>
                 </swiper>
             </div>
@@ -35,6 +35,7 @@ import 'swiper/css/swiper.css'
 import magazine from '../../components/magazine'
 import loading from '../../components/loading'
 import BScroll from 'better-scroll'
+import toast from '../../components/toast'
 export default {
     name:"home",
     data(){
@@ -93,18 +94,7 @@ export default {
                 
             },
             camptions:[
-                {
-                    id:'0',
-                    title:'vvvvvv这是标题1这是标题1这是标题1这是标题1这是标题1'
-                },
-                {
-                    id:'1',
-                    title:'aaaaa这是标题1这是标题1这是标题1这是标题1这是标题1'
-                },
-                {
-                    id:'2',
-                    title:'dddd这是标题1这是标题1这是标题1这是标题1这是标题1'
-                },
+                
             ]
         }
     },
@@ -117,40 +107,63 @@ export default {
     methods:{
         readClick(magId){
           console.log(magId)  
+        //   this.$router.push('/address')
+          this.$router.push('/magazine/detail/'+magId)
         },
         loadData(){
-            this.$nextTick(() => {
-                if (!this.scroll) {
-                    setTimeout(() => {
-                        this.scroll = new BScroll(this.$refs.wrapper, {
-                            click:true,
-                            disableMouse: false,
-                            disableTouch: false,
-                            bounce:200
-                        })
-                    }, 1000);
-                
-                console.log(this.scroll)
+            this.$api.home.getCampaign().then(res => {
+                console.log(res)
+                if(res.code == 0){
+                    this.camptions.push(res.data)
+                    this.swiperOption.autoplay =  this.camptions.length != 1 ? {
+                        direction: 'vertical',
+                        centeredSlides: true,
+                        observer:true,
+                        observeParents:true,
+                        autoplay: {
+                            delay: 5000,
+                            disableOnInteraction: false
+                        },
+                        loop: true
+                    } : false
                 }else{
-                    this.scroll.refresh();
+                    toast({
+                        text:res.message
+                    })
                 }
             })
+            this.$api.home.getHomeMagazine().then(res => {
+                console.log(res)
+                if(res.code == 0){
+                    this.recommend = res.data.focus
+                    this.maglist = res.data.top
+                    this.$nextTick(() => {
+                        if (!this.scroll) {
+                            setTimeout(() => {
+                                this.scroll = new BScroll(this.$refs.wrapper, {
+                                    click:true,
+                                    disableMouse: false,
+                                    disableTouch: false,
+                                    bounce:200
+                                })
+                            }, 1000);
+                        }else{
+                            this.scroll.refresh();
+                        }
+                    })
+                }else{
+                    toast({
+                        text: res.message
+                    })
+                }
+            })
+            
             
         }
     },
     created(){
         console.log(this.$route)
-        this.swiperOption.autoplay =  this.camptions.length != 1 ? {
-            direction: 'vertical',
-            centeredSlides: true,
-            observer:true,
-            observeParents:true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false
-            },
-            loop: true
-        } : false
+        
     },
     mounted(){
         // setTimeout(() => {

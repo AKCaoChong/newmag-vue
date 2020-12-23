@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" ref="wrapper">
+  <div class="wrapper" ref="wrapper" :class="className">
       <slot></slot>
   </div>
 </template>
@@ -56,6 +56,10 @@ export default {
         refreshDelay: {
             type: Number,
             default: 20
+        },
+        className:{
+            type: String,
+            default:'scroll-wrapper'
         }
     },
     mounted() {
@@ -66,16 +70,19 @@ export default {
     },
     methods: {
         _initScroll() {
-            if (!this.$refs.wrapper) {
-                return    
-            }
+            // if (!this.className) {
+            //     return    
+            // }
             // better-scroll的初始化
-            this.scroll = new BScroll(this.$refs.wrapper, {
+            this.scroll = new BScroll(`.${this.className}`, {
                 probeType: this.probeType,
                 click: this.click,
                 scrollX: this.scrollX,
-                bounce:200
+                bounce:100,
+                pullDownRefresh: this.pulldown,
+                pullUpLoad: this.pullup
             })
+            console.log(this.scroll)
             // 是否派发滚动事件
             if (this.listenScroll) {
                 let me = this
@@ -84,25 +91,29 @@ export default {
                 })
             }
             // 是否派发滚动到底部事件，用于上拉加载
-            if (this.pullup) {
-                this.scroll.on('scrollEnd', () => { // 滚动到底部
-                    if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+            if (this.pullup && !this.scrollX) {
+                this.scroll.on('pullingUp', () => { // 滚动到底部
                     this.$emit('scrollToEnd')
-                    }
+                    setTimeout(() => {
+                        this.scroll.finishPullUp()
+                    }, 3000);
                 })
             }
             // 是否派发顶部下拉事件，用于下拉刷新
-            if (this.pulldown) {
-                this.scroll.on('touchend', (pos) => { // 下拉动作
-                    if (pos.y > 50) {
+            if (this.pulldown && !this.scrollX) {
+                this.scroll.on('pullingDown', () => { // 下拉动作
                     this.$emit('pulldown')
-                    }
+                    setTimeout(() => {
+                        this.scroll.finishPullDown()
+                    }, 3000);
+
                 })
             }
             // 是否派发列表滚动开始的事件
             if (this.beforeScroll) {
                 this.scroll.on('beforeScrollStart', () => {
                     this.$emit('beforeScroll')
+                    
                 })
             }
         },
@@ -131,7 +142,6 @@ export default {
       // 监听数据的变化，延时refreshDelay时间后调用refresh方法重新计算，保证滚动效果正常
       data() {
         setTimeout(() => {
-            console.log('refresh')
           this.refresh()
         }, this.refreshDelay)
       }
