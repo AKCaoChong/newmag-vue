@@ -13,52 +13,15 @@
 import maghor from '../../components/magazineMine'
 import minetop from '../../components/mineTop'
 import scroll from '../../components/scroll'
-import toast from '../../components/toast'
+// import toast from '../../components/toast'
+import auth from '../../utils/auth'
 export default {
     name: 'mymag',
     data(){
         return {
-            userinfo:{
-                headimg:"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLSrpu0ZJm6p3r89jvSzYowf0r0OM1Jliatr8uKrxUibpQRj81YF1YZSia4xXGckYaz34aOO0py45krg/132",
-                nickname:"ZedLine"
-            },
+            userinfo: auth.getUser(),
             magList:[
-                {
-                    magazine_id:'1',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊",
-                    type:"瑞丽家居设计",
-                    all:'1',
-                    notused:'0'
-                },
-                {
-                    magazine_id:'12',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊",
-                    type:"瑞丽家居设计",
-                    all:'1',
-                    notused:'0'
-                },
-                {
-                    magazine_id:'4',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊",
-                    type:"瑞丽家居设计",
-                    all:'1',
-                    notused:'0'
-                },
-                {
-                    magazine_id:'122',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊",
-                    type:"瑞丽家居设计",
-                    all:'1',
-                    notused:'0'
-                }
+                
             ]
         }
     },
@@ -69,6 +32,7 @@ export default {
     },
     created(){
         this.loadMyMagazine()
+        console.log(this.userinfo)
     },
     methods:{
         readCodeClick(mag){
@@ -80,14 +44,15 @@ export default {
             console.log(mag)
         },
         loadMyMagazine(){
-            this.$api.ucenter.getMyMagazine().then(res => {
+            let params = {
+                tokens: auth.getToken()
+            }
+            this.$api.ucenter.getMyMagazine(params).then(res => {
                 console.log(res)
                 if(res.code == 0){
                     this.magList = res.data
                 }else{
-                    toast({
-                        text: res.message
-                    })
+                    console.log(res.message)
                 }
             })
         }

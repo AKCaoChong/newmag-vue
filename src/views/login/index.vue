@@ -36,13 +36,13 @@ export default {
         return{
             showlogin: false,
             showbind:false,
-            bgimg:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
+            bgimg:require('../../assets/img/login_bg.png'),
             phone:'',
             verifyCode:'',
             smsCode:'',
             code:'',
             identifyCode:"",
-            have_mobile: false,
+            have_mobile: 0,
             tokens: '',
             tks:'',
             btnText:'获取验证码',
@@ -56,44 +56,49 @@ export default {
     },
     mounted(){
         this.getSign()
-        this.loadValidateCode()
     },
     methods:{
         wechatLogin(){
-            this.getSign()
-            this.showlogin = false
-            setTimeout(() => {
-                this.showbind = true
-            }, 250);
-            
+            this.getSign() 
         },
         getSign(){
             let thecode = this.getCode()
             if(thecode){
                 this.showlogin = false
-                setTimeout(() => {
-                    this.showbind = true
-                }, 250);
                 let params ={
                     code: thecode,
                     state: 'RAYLI2020'
                 }
                 console.log('denglu')
                 this.$api.login.getLogin(params).then(res => {
+                    console.log('====login result===')
+                    console.log(res)
                     if(res.code == 0){
+                        res = res.data
                         this.have_mobile = res.have_mobile
                         this.tks = res.tks,
                         this.tokens = res.tokens
-                        if(this.hava_mobile == 0){
+                        if(this.have_mobile == 0){
+                            console.log('no phone')
                             this.showbind = true
                             this.loadValidateCode()
                         }else{
+                            console.log('has phone')
                             this.showbind = false
                             let user = {
                                 headimg: res.headimg,
                                 nickname: res.nickname
                             }
                             auth.setUserToken(user,res.tokens)
+                            setTimeout(() => {
+                                const from = this.$route.query['from']
+                                console.log(from)
+                                if(from){
+                                    this.$router.push(from)
+                                }else{
+                                    this.$router.replace('/')
+                                }
+                            }, 250);
                         }
                     }else{
                         toast({
@@ -129,7 +134,6 @@ export default {
         },
         // 获取验证码
         sendSmsCode(){
-            console.log('hellollllllll')
             this.timer = setInterval(() => {
                 this.seconds-=1
                 if(this.seconds == 0){
@@ -221,7 +225,7 @@ export default {
             }
             this.$api.login.getValidateCode(params).then(res => {
                 if(res.code == 0){
-                    this.identifyCode = res.code
+                    this.identifyCode = res.data.code.toString()
                 }else{
                     toast({
                         text: res.message
@@ -244,6 +248,7 @@ export default {
                     }
                     this.$api.login.bindPhone(params).then(res => {
                         if(res.code == 0){
+                            res = res.data
                             this.showbind = false
                             let user = {
                                 headimg: res.headimg,

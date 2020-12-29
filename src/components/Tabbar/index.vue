@@ -27,7 +27,7 @@ export default {
     display: flex;
     text-align: center;
     height: 49px;
-    background-color: #f2f2f2;
+    background-color: #000000;
     box-shadow: 0 -1px 1px rgba(100, 100, 100, 0.2);
     position: fixed;
     left: 0;

@@ -14,12 +14,13 @@
                   .read-code {
                     background-color: #333333;
                     color: #ffffff;
-                    height: 40px;
-                    margin: 10px;
-                    border-radius: 10px;
-                    font-size: 16px;
-                    width: 120px;
                     border: none;
+                    width: 160px;
+                    height: 46px;
+                    border-radius: 10px;
+                    text-align: center;
+                    margin: 5px;
+                    font-size: 16px;
                   }
                 </style>
                 <button class="read-code">开始阅读</button>
@@ -171,7 +172,7 @@ export default {
     },
     payClick(){
       let params ={
-        tokens: auth.getToken,
+        tokens: auth.getToken(),
         magazine_id: this.mag_id,
         amount: this.buyNum
       }
@@ -183,6 +184,7 @@ export default {
       })
     },
     wxPay(payConfig){
+      console.log(`wxpayconfig:${payConfig}`)
       wx.chooseWXPay({
         timestamp: payConfig.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
         nonceStr: payConfig.nonceStr, // 支付签名随机串，不长于 32 位
@@ -193,6 +195,7 @@ export default {
           console.log('成功'+res)
           this.loadMagazineDetail()
           // 支付成功后的回调函数
+          this.isShowBuy = false
           toast({
             text:'支付成功'
           })

@@ -13,7 +13,8 @@
 import scroll from '../../components/scroll'
 import minetop from '../../components/mineTop'
 import magazine from '../../components/magazine'
-import toast from '../../components/toast'
+// import toast from '../../components/toast'
+import auth from '../../utils/auth'
 export default {
     name:'mycollect',
     components:{
@@ -23,50 +24,12 @@ export default {
     },
     data(){
         return{
-            userinfo:{
-                head:"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLSrpu0ZJm6p3r89jvSzYowf0r0OM1Jliatr8uKrxUibpQRj81YF1YZSia4xXGckYaz34aOO0py45krg/132",
-                name:"ZedLine"
-            },
+            userinfo: auth.getUser(),
             magboxStyle:{
                 
             },
             magList:[
-                {
-                    magazine_id:'1',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊",
-                    type:"瑞丽家居设计",
-                    all:'1',
-                    notused:'0'
-                },
-                {
-                    magazine_id:'12',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊",
-                    type:"瑞丽家居设计",
-                    all:'1',
-                    notused:'0'
-                },
-                {
-                    magazine_id:'4',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊",
-                    type:"瑞丽家居设计",
-                    all:'1',
-                    notused:'0'
-                },
-                {
-                    magazine_id:'122',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊",
-                    type:"瑞丽家居设计",
-                    all:'1',
-                    notused:'0'
-                }
+                
             ]
         }
     },
@@ -76,13 +39,14 @@ export default {
             this.$router.push('/magazine/detail/'+mag_id)
         },
         loadMyCollect(){
-            this.$api.ucenter.getMyCollect().then(res => {
+            let params = {
+                tokens: auth.getToken()
+            }
+            this.$api.ucenter.getMyCollect(params).then(res => {
                 if(res.code == 0){
                     this.magList = res.data
                 }else{
-                    toast({
-                        text: res.message
-                    })
+                    console.log(res.message)
                 }
             })  
         }

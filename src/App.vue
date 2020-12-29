@@ -21,7 +21,7 @@ export default {
   data(){
     return{
       normalColor:"#a7a7a7",
-      activeColor:"#BC916B",
+      activeColor:"#ffffff",
       tabbarList:[
         {
           link:"/home",

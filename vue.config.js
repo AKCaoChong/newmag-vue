@@ -15,5 +15,5 @@ module.exports = {
             },
         }
     },
-    publicPath: isPro ? "" : "/",
+    publicPath: isPro ? "/dist/" : "/",
 };
