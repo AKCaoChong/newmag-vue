@@ -7,7 +7,25 @@
                 <p class="comment-title">{{recommend.main_title}}</p>
                 <p class="comment-time">{{recommend.sub_title}}</p>
                 <button class="read" @click="readClick(recommend.magazine_id)">开始阅读</button>
-                <button class="other">电子刊</button>
+                <wx-open-launch-weapp id="launch-btn" :username="weapp.name" :path="weapp.path" @launch="handleLaunchSuccess" @error="handleLaunchError">
+                    <script type="text/wxtag-template">
+                        <style>
+                        .read-code {
+                            background-color: #333333;
+                            color: #ffffff;
+                            border: none;
+                            width: 160px;
+                            height: 46px;
+                            border-radius: 10px;
+                            text-align: center;
+                            margin: 5px;
+                            font-size: 16px;
+                        }
+                    </style>
+                        <button class="read-code">电子刊</button>
+                    </script>
+                </wx-open-launch-weapp>
+                <!-- <button class="other">电子刊</button> -->
             </div>
             <div class="camption-group">
                 <swiper class="swiper" :options="swiperOption">
@@ -21,7 +39,7 @@
             <div class="mag-list">
                 <swiper class="list-swiper" :options="listSwiperOpt">
                     <swiper-slide v-for="mag in maglist" :key="mag.magazine_id" class="swiper-mag">
-                        <magazine :mag="mag" @magClick="readClick(mag.magazine_id)"></magazine>
+                        <magazine :mag="mag" @magClick="readClick(mag.magazine_id)" :titlefont="12"></magazine>
                     </swiper-slide>
                 </swiper>
             </div>
@@ -36,6 +54,7 @@ import magazine from '../../components/magazine'
 import loading from '../../components/loading'
 import BScroll from 'better-scroll'
 import toast from '../../components/toast'
+import wx from 'weixin-js-sdk'
 export default {
     name:"home",
     data(){
@@ -75,6 +94,10 @@ export default {
                     sub_title:"2020年10月刊"
                 }
             ],
+            weapp:{
+                name:'gh_20e7279bd2dc',
+                path:'pages/home/home.html'
+            },
             swiperOption: {
                 direction: 'vertical',
                 centeredSlides: true,
@@ -105,6 +128,12 @@ export default {
       loading
     },
     methods:{
+        handleLaunchSuccess(){
+            console.log("success")
+        },
+        handleLaunchError(){
+            console.log('error')
+        },
         readClick(magId){
           console.log(magId)  
         //   this.$router.push('/address')
@@ -163,7 +192,8 @@ export default {
     },
     created(){
         console.log(this.$route)
-        
+        let res = {'openTagList': 'wx-open-launch-weapp'}
+        wx.config(res)
     },
     mounted(){
         // setTimeout(() => {

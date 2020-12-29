@@ -3,8 +3,8 @@
     <div class="content">
       <div class="top-group">
         <div class="info-group">
-          <img :src="user.head" alt="" class="info-head" />
-          <p class="info-name">{{ user.name }}</p>
+          <img :src="user.headimg" alt="" class="info-head" />
+          <p class="info-name">{{ user.nickname }}</p>
           <div class="info-list">
             <router-link :to="tag.path" tag="div" class="info-tag" v-for="tag in tagList" :key="tag.id">
               <div class="left-tag" :style="{'width': tagw+'px'}">
@@ -36,16 +36,14 @@
 <script>
 import scroll from "../../components/scroll";
 import cell from "../../components/cell"
+import auth from "../../utils/auth"
+import toast from "../../components/toast"
 export default {
   name: "ucenter",
   data() {
     return {
       tagw:(document.documentElement.clientWidth - 40)/4,
-      user: {
-        head:
-          "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1607336378834&di=9df0e9e97cd7f5e58c3d86b2ee2d5da3&imgtype=0&src=http%3A%2F%2Fdiy.qqjay.com%2Fu%2Ffiles%2F2012%2F0217%2Fb693a3b6d232ffe861da22287c888729.jpg",
-        name: "ZedLine",
-      },
+      user: auth.getUser(),
       tagList: [
         {
           img: require("@/assets/img/mine_mag.png"),
@@ -66,47 +64,46 @@ export default {
           path:'/ucenter/address'
         },
         {
-          img: require("@/assets/img/mine_model.png"),
-          title: "明星电子刊",
+          img: require("@/assets/img/mine_mag.png"),
+          title: "购买纸刊",
           id: "3",
-          path:'/ucenter/address'
+          path:'/ucenter/buymagazine'
         },
       ],
       selList:[
       {
-        img:require("@/assets/img/sel_mag.png"),
+        img:require("@/assets/img/mine_buy.png"),
         title:"购买纸刊",
         id:'0'
       },
+      // {
+      //   img:require("@/assets/img/mine_share.png"),
+      //   title:"分享",
+      //   id:'1'
+      // },
       {
-        img:require("@/assets/img/sel_share.png"),
-        title:"分享小程序",
-        id:'1'
-      },
-      {
-        img:require("@/assets/img/sel_conact.png"),
+        img:require("@/assets/img/mine_connect.png"),
         title:"联系客服",
         id:'2'
       },
-      {
-        img:require("@/assets/img/sel_hello.png"),
-        title:"明星电子刊",
-        id:'3'
-      }
+      // {
+      //   img:require("@/assets/img/mine_mag.png"),
+      //   title:"明星电子刊",
+      //   id:'3'
+      // }
     ]
     };
   },
   methods:{
     login(id){
-      // this.$toast({text:'hello'})
-      console.log(id)
-      let data = {
-        "phone": '12811159868',
-        "code": '2324'
+      if(id == 0){
+        this.$router.push({name: 'buymagazine'})
+        return
       }
-      this.$api.login.getLogin(data).then(res => {
-        console.login(res)
-      })
+      if(id == 2){
+        toast({text:'请通过电子刊小程序联系客服'})
+      }
+      
     },
     
   },

@@ -12,7 +12,7 @@
             </ul>
         </scroll>
         <div class="mag-list">
-            <magazine v-for="mag in maglist" :key="mag.magazine_id" @magClick="readClick" :magheight="magboxStyle.height" :magwidth="magboxStyle.width" :mag="mag" style="margin-bottom:10px"></magazine>
+            <magazine v-for="mag in maglist" :key="mag.magazine_id" @magClick="readClick" :magheight="magboxStyle.height" :magwidth="magboxStyle.width" :mag="mag" style="margin-bottom:15px"></magazine>
         </div>
         <div class="loading-more" v-show = "isShowMore">加载更多</div>
       </div>
@@ -203,7 +203,9 @@ export default {
 <style scoped lang="scss">
 .all-group{
     padding-top: 10px;
+    padding-bottom: 20px;
     position: relative;
+    background-color: #ffffff;
     .refresh-label{
         position: absolute;
         top: -50px;

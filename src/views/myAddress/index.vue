@@ -50,15 +50,15 @@ export default {
                     id:'1003'
                 }
             ],
-            userinfo:{
-                headimg:"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLSrpu0ZJm6p3r89jvSzYowf0r0OM1Jliatr8uKrxUibpQRj81YF1YZSia4xXGckYaz34aOO0py45krg/132",
-                nickname:"ZedLine"
-            },
+            userinfo: auth.getUser(),
         }
     },
     methods:{
         loadMyAddress(){
-            this.$api.ucenter.getMyAddress().then(res => {
+            let params = {
+                tokens: auth.getToken()
+            }
+            this.$api.ucenter.getMyAddress(params).then(res => {
                 if(res.code == 0){
                     this.addressList = res.data
                 }else{

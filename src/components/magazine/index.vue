@@ -1,7 +1,7 @@
 <template>
   <div class="mag-group" @click="magClick(mag.magazine_id)" :style="{width: magwidth + 'px',height: magheight + 'px'}">
       <img :src="mag.logo" alt=""  :style="{maxHeight: magwidth *  1.28 + 'px'}">
-      <p class="title">{{mag.main_title}}</p>
+      <p class="title" :style="{fontSize: titlefont + 'px'}">{{mag.main_title}}</p>
       <p class="subtitle">{{mag.sub_title}}</p>
   </div>
 </template>
@@ -23,6 +23,10 @@ export default {
         magheight:{
             type: Number,
             default: 210
+        },
+        titlefont:{
+            type: Number,
+            default:16
         }
     },
     methods:{
@@ -38,9 +42,9 @@ export default {
     width: 120px;
     display: flex;
     flex-direction: column;
-    background-color: #eeeeee;
+    background-color: #ffffff;
     // border: 1px solid #eeeeee;
-    box-shadow: 0 0 5px 5px #ffffff;
+    box-shadow: 3px 3px 5px 5px #eeeeee;
     img{
         width: 100%;
     }
@@ -50,6 +54,10 @@ export default {
         font-weight: bold;
         padding-top: 5px;
         padding-left: 5px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
     }
     .subtitle{
         font-size: 14px;

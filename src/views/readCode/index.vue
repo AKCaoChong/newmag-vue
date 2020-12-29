@@ -1,5 +1,5 @@
 <template>
-  <scroll class="container" :data="codeList">
+  <scroll class="container" :data="codeList" pulldown pullup @pulldown="onPulldownRefresh" @scrollToEnd="onReachBottom">
     <div class="content">
         <div class="top-desc">
             <p class="desc">每个阅读码对应一本电子杂志,每个阅读码只可被激活一次,每人只能激活每本刊的一个阅读码,更多阅读码可以送给朋友</p>
@@ -33,48 +33,17 @@
 <script>
 import scroll from '../../components/scroll'
 import maghor from '../../components/magazineMine'
-import toast from '../../components/toast'
+// import toast from '../../components/toast'
+import auth from '../../utils/auth'
 export default {
     name:'codeList',
     data(){
         return{
             codeList:[
-                {
-                    code:'ASDFWEEFSEA',
-                    status:'1',
-                    activate_time:'2020-10-20',
-                    headimg:"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLSrpu0ZJm6p3r89jvSzYowf0r0OM1Jliatr8uKrxUibpQRj81YF1YZSia4xXGckYaz34aOO0py45krg/132",
-                    nickname:"ZedLine"
-                },
-                {
-                    code:'ASDFWEEFSEA',
-                    status:'2',
-                    
-                },
-                {
-                    code:'ASDFWEEFSEA',
-                    status:'1',
-                    activate_time:'2020-10-20',
-                    headimg:"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLSrpu0ZJm6p3r89jvSzYowf0r0OM1Jliatr8uKrxUibpQRj81YF1YZSia4xXGckYaz34aOO0py45krg/132",
-                    nickname:"ZedLine"
-                    
-                },
-                {
-                    code:'ASDFWEEFSEA',
-                    status:'2',
-                    
-                },
-                {
-                    code:'ASDFWEEFSEA',
-                    status:'0',
-                    
-                },
-                {
-                    code:'ASDFWEEFSEA',
-                    status:'0',
-                    
-                },
+                
             ],
+            pagenum: 0,
+            pagecount: 10,
         }
     },
     components:{
@@ -93,6 +62,9 @@ export default {
     mounted(){
         
     },
+    created(){
+        this.loadReadCodeList()
+    },
     methods:{
         readCodeClick(mag){
             console.log(mag)
@@ -101,15 +73,35 @@ export default {
             console.log(mag)
         },
         loadReadCodeList(){
-            this.$api.ucenter.getMyReadCode().then(res => {
+            let params = {
+                magazine_id: this.magazine.magazine_id,
+                tokens: auth.getToken(),
+                pagenum: this.pagenum,
+                pagecount: this.pagecount
+            }
+            this.$api.ucenter.getMyReadCode(params).then(res => {
                 if(res.code == 0){
-                    this.codeList = res.data
+                    if(this.pagenum == 0){
+                        this.codeList = res.data
+                    }else{
+                        this.codeList.concat(res.data)
+                    }
                 }else{
-                    toast({
-                        text: res.message
-                    })
+                    if(this.pagenum >0){
+                        this.pagenum -= 1
+                    }
                 }
             })
+        },
+        onPulldownRefresh(){
+            console.log('load refresh')
+            this.pagenum = 0
+            this.loadReadCodeList()
+        },
+        onReachBottom(){
+            console.log('load more')
+            this.pagenum+=1
+            this.loadReadCodeList()
         }
 
     }
