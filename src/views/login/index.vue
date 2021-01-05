@@ -134,17 +134,7 @@ export default {
         },
         // 获取验证码
         sendSmsCode(){
-            this.timer = setInterval(() => {
-                this.seconds-=1
-                if(this.seconds == 0){
-                    this.btnText = '获取验证码'
-                    clearInterval(this.timer)
-                    this.smsDisabled = false
-                }else{
-                    this.btnText = this.seconds + 's'
-                    this.smsDisabled = true
-                }
-            }, 1000);
+            
             if(this.checkPhone(this.phone) && this.verifyCode.length>0){
                 let params = {
                     mobile: this.phone,
@@ -157,20 +147,21 @@ export default {
                             text:'发送成功'
                         })
                         this.timer = setInterval(() => {
-                            this.seconds-=1
+                            
                             if(this.seconds == 0){
                                 this.btnText = '获取验证码'
                                 clearInterval(this.timer)
+                                this.timer = null
                                 this.smsDisabled = false
                             }else{
+                                this.seconds-=1
                                 this.btnText = this.seconds + 'S'
                                 this.smsDisabled = true
                             }
                         }, 1000);
                     }else{
-                        toast({
-                            text:'发送失败'
-                        })
+                        console.log(res.message)
+                        this.refreshCode()
                     }
                 })
             }else{

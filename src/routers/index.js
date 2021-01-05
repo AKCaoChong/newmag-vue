@@ -14,7 +14,6 @@ import buyMagazine from './buyMagazine'
 
 Vue.use(VueRouter)
 
-
 const routes = [
   home,kan,ucenter,login,kanDetail,address,myMag,myCollect,codeList,buyMagazine,
   {
@@ -45,6 +44,12 @@ router.beforeEach((to,from,next) => {
   if(to.meta.title){
     document.title = to.meta.title
   }
+  console.log(to)
+  if (to.name && to.name === 'magDetail') {
+    to.meta.keepAlive = true
+  } else {
+    to.meta.keepAlive = false
+  }
   if(to.meta.requiredAuth && !auth.is_authed){
     next({
       name:'login',
@@ -56,6 +61,7 @@ router.beforeEach((to,from,next) => {
     next()
     console.log(to)
   }
+  
 })
 
 router.onError((error) => {

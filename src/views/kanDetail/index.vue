@@ -35,7 +35,7 @@
           <img src="@/assets/img/close.png" alt="" @click="closeBuyView">
         </div>
         <div class="info-group">
-          <p class="title">{{mag.title}}</p>
+          <p class="title">{{magazine.main_title}}</p>
           <p class="buy-dec">订阅说明</p>
         </div>
         <div class="price-group">
@@ -46,8 +46,9 @@
           </div>
           <span class="price-label">￥{{customPrice}}</span>
         </div>
-        <div class="address-group">
-          <span class="sel-address">选择地址获得赠品</span>
+        <div class="address-group" v-if="hasActive" @click="toSelAddress">
+          <span class="sel-address" v-if="selAddress">{{selAddress.province}} {{selAddress.city}} {{selAddress.district}} {{selAddress.address}}</span>
+          <span class="sel-address" v-else>选择地址获得赠品</span>
           <img class="right" src="@/assets/img/address_right.png" alt="">
         </div>
         <button class="pay" @click="payClick">支付购买</button>
@@ -75,16 +76,14 @@ export default {
         transform: 'translateY(100%)'
       },
       weapp:{
-        name:'gh_20e7279bd2dc',
-        path:'pages/home/home.html'
+        name:'gh_1d845bdf82d8',
+        path:`pages/magPreview/magPreview.html?mag_id=${this.mag_id}`
       },
       is_mine: true,
       is_free: true,
-      imgList:[
-        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608096997685&di=736828bca9b7c6e12e8eb37eac0f70e3&imgtype=0&src=http%3A%2F%2Fpic.17qq.com%2Fuploads%2Fhhiheipojz.jpeg',
-        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608096997683&di=d19e1e0452026da81ca0fd9c876290d3&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201608%2F07%2F20160807154746_mXxeG.jpeg',
-        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608096997682&di=e2721f0273a7636243a77f78e7eb263a&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn09%2F133%2Fw640h1093%2F20180705%2Fa906-hevauxk7661490.jpg'
-      ],
+      campaign_id: null,
+      hasActive: false,
+      
       disabled: false,
       mag:{
         title:'万茜 千面一人'
@@ -108,18 +107,25 @@ export default {
       onePrice: 16,
       customPrice: 16,
       isShowBuy: false,
-      magazine:{}
+      magazine:{},
+      selAddress: null
     }
   },
   props:['mag_id'],
   created(){
-    console.log('detail created')
+    
+  },
+  activated(){
+    if(this.$store.state.address.selAddressStr){
+      this.selAddress = JSON.parse(this.$store.state.address.selAddressStr)
+      console.log('这是 selAddress==' + this.$store.state.address.selAddressStr)
+      console.log(this.selAddress)
+    }else{
+      console.log('detail created')
+    }
+    this.loadMagazineDetail()
   },
   mounted(){
-    console.log('detail')
-    // let res = {'openTagList': 'wx-open-launch-weapp'}
-    // wx.config(res)
-    console.log(this.mag_id);
     this.loadMagazineDetail()
   },
   watch:{
@@ -148,6 +154,9 @@ export default {
     //开始阅读 去小程序
     readClick(){
 
+    },
+    toSelAddress(){
+      this.$router.push({name:'address',params:{isSel: true}})
     },
     // -----
     bindMinus(){
@@ -183,8 +192,12 @@ export default {
         }
       })
     },
+    destroyed(){
+      this.$store.commit('address/clearSelAddress')
+    },
     wxPay(payConfig){
       console.log(`wxpayconfig:${payConfig}`)
+      var that = this
       wx.chooseWXPay({
         timestamp: payConfig.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
         nonceStr: payConfig.nonceStr, // 支付签名随机串，不长于 32 位
@@ -193,12 +206,25 @@ export default {
         paySign: payConfig.paySign, // 支付签名
         success: function (res) {
           console.log('成功'+res)
-          this.loadMagazineDetail()
+          that.loadMagazineDetail()
           // 支付成功后的回调函数
           this.isShowBuy = false
           toast({
             text:'支付成功'
           })
+          if(that.hasActive){
+            let params ={
+              tokens: auth.getToken(),
+              magazine_id: this.mag_id,
+              amount: this.buyNum,
+              campaign_id: this.campaign_id,
+              address_id: this.selAddress.address_id
+            }
+            that.$api.magazine.uploadMagazineAddress(params).then(res => {
+              console.log(res)
+            })
+          }
+          
         },
         cancel: function(res){
           console.log('取消'+res)
@@ -222,8 +248,17 @@ export default {
         console.log(res)
         if(res.code == 0){
           this.magazine = res.data;
-          // this.is_free = res.data.is_free;
-          // this.is_mine = res.data.is_mine;
+          this.onePrice = res.data.price
+          this.is_free = res.data.is_free;
+          if(res.data.is_mine){
+            this.is_mine = res.data.is_mine;
+          }
+          document.title = this.magazine.main_title
+          if(res.data.campaign_id){
+            this.campaign_id = res.data.campaign_id
+            this.hasActive = true
+          }
+          
         }else{
           toast({
             text: res.message

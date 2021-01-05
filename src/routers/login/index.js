@@ -3,6 +3,7 @@ export default{
     component: () => import('../../views/login'),
     name:'login',
     meta:{
-        title: '登录'
+        title: '登录',
+        keepAlive: false
     }
 }

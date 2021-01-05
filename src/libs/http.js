@@ -1,9 +1,9 @@
 import axios from 'axios'
 import toast from '../components/toast'
 import qs from 'qs'
-const DEV_BASE_URL = "https://zine.rayligirl.com/";
-const DEBUG_BASE_URL = "https://zine.rayligirl.com/";
-const PRO_BASE_URL = "https://zine.rayligirl.com/";
+const DEV_BASE_URL = "/dev_url";
+const DEBUG_BASE_URL = "https://zine.raylimobile.com/";
+const PRO_BASE_URL = "https://zine.raylimobile.com/";
 // 创建 axios 实例
 const service = axios.create({
     // 配置项  'Content-Type': 'application/json;charset=utf-8'   'Content-Type': 'multipart/form-data'

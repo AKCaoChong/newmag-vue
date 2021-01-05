@@ -27,6 +27,10 @@ const magazine = {
     buyMagazine(data){
         console.log(data)
         return service.post('ezine/api/h5/pay',data)
+    },
+    uploadMagazineAddress(data){
+        console.log(data)
+        return service.post('ezine/api/mine/gift',data)
     }
 }
 

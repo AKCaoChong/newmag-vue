@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <transition name="fade" mode="out-in">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view v-if="this.$route.meta.keepAlive"></router-view>
+      </keep-alive>
+    </transition>
+    <transition name="fade" mode="out-in">
+      <router-view v-if="!this.$route.meta.keepAlive"></router-view>
     </transition>
     <tabbar v-if="this.$route.name == 'home' || this.$route.name == 'magazine' || this.$route.name == 'ucenter'">
       <tabbarItem  v-for="item in tabbarList" :key="item.text" :link="item.link" :normalColor="normalColor" :activeColor="activeColor">
@@ -56,6 +61,7 @@ export default {
     next()
   },
   created(){
+    
     if (window.localStorage.getItem("minemag") ) {
         this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(window.localStorage.getItem("minemag"))))
     } 
@@ -101,7 +107,7 @@ html,body,#app{
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
-  transition: all 500ms;
+  transition: all 250ms;
   position:absolute;
 }
 
