@@ -65,42 +65,7 @@ export default {
                 
             },
             maglist:[
-                {
-                    magazine_id:'1',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                },
-                {
-                    magazine_id:'12',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                },
-                {
-                    magazine_id:'4',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                },
-                {
-                    magazine_id:'122',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                },
-                {
-                    magazine_id:'40',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                },
-                {
-                    magazine_id:'1202',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                }
+                
             ],
         }
     },

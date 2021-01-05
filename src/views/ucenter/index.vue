@@ -64,7 +64,7 @@ export default {
           path:'/ucenter/address'
         },
         {
-          img: require("@/assets/img/mine_mag.png"),
+          img: require("@/assets/img/mine_tomag.png"),
           title: "购买纸刊",
           id: "3",
           path:'/ucenter/buymagazine'

@@ -3,7 +3,8 @@ export default  {
     component: () => import('../../views/home'),
     meta:{
         title:'首页',
-        requiredAuth: true
+        requiredAuth: true,
+        keepAlive: false
     },
     name:'home'
 }

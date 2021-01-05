@@ -3,7 +3,8 @@ export default  {
     component: () => import('../../views/myAddress'),
     meta:{
         title:'我的地址',
-        requiredAuth: false
+        requiredAuth: false,
+        keepAlive: false
     },
     name:'address'
 }

@@ -3,7 +3,8 @@ export default  {
     component: () => import ("../../views/kanDetail"),
     props: true,
     meta:{
-        title:'详情'
+        title:'详情',
+        keepAlive: true
     },
     name:'magDetail',
     

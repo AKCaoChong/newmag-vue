@@ -14,7 +14,7 @@ export default {
     left: 50%;
     top: 50%;
     background: #eeeeee;
-    padding: 12px;
+    padding: 10px;
     border-radius: 5px;
     transform: translate(-50%,-50%);
     color: #333333;

@@ -4,13 +4,15 @@ import debounce from './debounce'
 import emoji from './emoji'
 import permision from './permission'
 import waterMaker from './waterMaker'
+import draggable from './draggable'
 const directives = {
     copy,
     longPress,
     debounce,
     emoji,
     permision,
-    waterMaker
+    waterMaker,
+    draggable
 }
 
 export default{

@@ -4,7 +4,7 @@ module.exports = {
     devServer: {
         proxy: {
             "/dev_url": {
-                target: "https://zine.rayligirl.com/",
+                target: "https://zine.raylimobile.com/",
                 changeOrigin: true,
                 pathRewrite: {
                     /* 重写路径，当我们在浏览器中看到请求的地址为：http://localhost:8080/api/core/getData/userInfo 时

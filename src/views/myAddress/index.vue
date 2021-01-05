@@ -3,7 +3,7 @@
       <div class="content">
           <minetop :userinfo="userinfo"></minetop>
           <div class="address-list">
-            <addressCell v-for="address in addressList" :key="address.id" :address="address"></addressCell>
+            <addressCell v-for="address in addressList" :key="address.id" :address="address" @addressClick="addressAction(address)"></addressCell>
           </div>
       </div>
   </scroll>
@@ -13,7 +13,7 @@
 import scroll from '../../components/scroll'
 import minetop from '../../components/mineTop'
 import addressCell from '../../components/addressCell'
-import toast from '../../components/toast'
+// import toast from '../../components/toast'
 import auth from '../../utils/auth'
 export default {
     name:'myaddress',
@@ -25,30 +25,6 @@ export default {
     data(){
         return {
             addressList:[
-                {
-                    name:'王二小',
-                    mobile:'18211159868',
-                    province:'陕西省',
-                    city:'西安市',
-                    address:'咸阳区城门楼子下',
-                    id:'1001'
-                },
-                {
-                    name:'王二小',
-                    mobile:'18211159868',
-                    province:'陕西省',
-                    city:'西安市',
-                    address:'咸阳区城门楼子下',
-                    id:'1002'
-                },
-                {
-                    name:'王二小',
-                    mobile:'18211159868',
-                    province:'陕西省',
-                    city:'西安市',
-                    address:'咸阳区城门楼子下',
-                    id:'1003'
-                }
             ],
             userinfo: auth.getUser(),
         }
@@ -62,11 +38,19 @@ export default {
                 if(res.code == 0){
                     this.addressList = res.data
                 }else{
-                    toast({
-                        text: res.message
-                    })
+                    console.log(res.message)
                 }
             })
+        },
+        addressAction(addr){
+            console.log('=====address====')
+            console.log(addr)
+            console.log('=====address====')
+            if(this.$route.params.isSel){
+                this.$store.commit('address/setSelAddress',addr)
+                this.$router.back(-1)
+            }
+           
         }
     },
     created(){

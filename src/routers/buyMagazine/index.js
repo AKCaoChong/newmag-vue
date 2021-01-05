@@ -4,6 +4,7 @@ export default {
     name:'buymagazine',
     props: true,
     meta:{
-        title: '购买纸刊'
+        title: '购买纸刊',
+        keepAlive: false
     }
 }

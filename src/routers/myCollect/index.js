@@ -4,6 +4,7 @@ export default {
     component: () => import ('../../views/myCollect'),
     meta:{
         title:'我的收藏',
-        requiredAuth: false
+        requiredAuth: false,
+        keepAlive: false
     },
 }

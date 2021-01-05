@@ -1,5 +1,5 @@
 <template>
-  <div class="address-group">
+  <div class="address-group" @click="addressClick()">
       <p class="name-mobile">{{address.name}} {{address.mobile}}</p>
       <p class="address">{{address.province}}{{address.city}}{{address.district}}{{address.address}}</p>
   </div>
@@ -14,6 +14,14 @@ export default {
             default:function(){
                 return {}
             }
+        }
+    },
+    methods:{
+        addressClick(){
+            console.log('=====addressaaa====')
+            console.log(this.address)
+            console.log('=====addressaaaa====')
+            this.$emit('addressClick',this.address)
         }
     }
 

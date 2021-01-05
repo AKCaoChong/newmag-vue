@@ -27,7 +27,7 @@
                 </wx-open-launch-weapp>
                 <!-- <button class="other">电子刊</button> -->
             </div>
-            <div class="camption-group">
+            <div class="camption-group" v-if="camptions.length>0">
                 <swiper class="swiper" :options="swiperOption">
                     <swiper-slide v-for="camp in camptions" :key="camp.id" class="swiper-item">
                         <p>{{camp.campaign_title}}</p>
@@ -53,7 +53,7 @@ import 'swiper/css/swiper.css'
 import magazine from '../../components/magazine'
 import loading from '../../components/loading'
 import BScroll from 'better-scroll'
-import toast from '../../components/toast'
+// import toast from '../../components/toast'
 import wx from 'weixin-js-sdk'
 export default {
     name:"home",
@@ -62,42 +62,12 @@ export default {
             scroll:null,
             showloading: false,
             recommend:{
-                logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                main_title:"复古情结",
-                sub_title:"2020年10月刊",
-                magazine_id:"1111",
-                is_free:'1'
+                
             },
             maglist:[
-                {
-                    magazine_id:'1',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                },
-                {
-                    magazine_id:'12',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                },
-                {
-                    magazine_id:'4',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                },
-                {
-                    magazine_id:'122',
-                    logo:"http://app.raylihome.com.cn/furniture/Public/magazine/2020-09-28/5f71b5a3c57e9.jpg",
-                    main_title:"复古情结",
-                    sub_title:"2020年10月刊"
-                }
+                
             ],
-            weapp:{
-                name:'gh_20e7279bd2dc',
-                path:'pages/home/home.html'
-            },
+           
             swiperOption: {
                 direction: 'vertical',
                 centeredSlides: true,
@@ -156,9 +126,7 @@ export default {
                         loop: true
                     } : false
                 }else{
-                    toast({
-                        text:res.message
-                    })
+                    console.log(res.message)
                 }
             })
             this.$api.home.getHomeMagazine().then(res => {
@@ -166,6 +134,10 @@ export default {
                 if(res.code == 0){
                     this.recommend = res.data.focus
                     this.maglist = res.data.top
+                    this. weapp = {
+                        name:'gh_1d845bdf82d8',
+                        path:`pages/magPreview/magPreview.html?mag_id=${this.recommend.magazine_id}`
+                    }
                     this.$nextTick(() => {
                         if (!this.scroll) {
                             setTimeout(() => {
@@ -181,9 +153,8 @@ export default {
                         }
                     })
                 }else{
-                    toast({
-                        text: res.message
-                    })
+                    console.log(res.message)
+                    
                 }
             })
             
@@ -249,8 +220,8 @@ export default {
     }
     .camption-group{
         margin: 10px;
-        height: 50px;
-        padding: 10px;
+        height: 40px;
+        padding: 5px;
         box-sizing: border-box;
         background-color: #eeeeee;
         border-radius: 4px;

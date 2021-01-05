@@ -4,6 +4,7 @@ export default{
     name:'codelist',
     props: true,
     meta:{
-        title: '我的阅读码'
+        title: '我的阅读码',
+        keepAlive: false
     }
 }

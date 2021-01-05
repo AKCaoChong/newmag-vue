@@ -4,6 +4,7 @@ export default {
     component: () => import ('../../views/myMag'),
     meta:{
         title:'我的期刊',
-        requiredAuth: false
+        requiredAuth: false,
+        keepAlive: false
     },
 }
