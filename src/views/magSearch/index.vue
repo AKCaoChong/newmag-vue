@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="mag-list">
-            <maghor :magazine="mag" :ismy="false" :hideread='true' v-for="mag in magList" :key="mag.magazine_id"></maghor>
+            <maghor :magazine="mag" :ismy="false" :hideread='true' v-for="mag in magList" :key="mag.magazine_id" @readBeignAction="readBeginClick"></maghor>
         </div>
       </div>
   </scroll>
@@ -42,8 +42,31 @@ export default {
         this.loadSearchTags()
     },
     methods:{
-        inputChange(e){
-            console.log(e)
+        debounce(func,delay){
+            let timer = null,
+            that = this
+            return function(){
+                if(timer){
+                    clearTimeout(timer)
+                }
+                timer = setTimeout(() => {
+                    func.apply(that)
+                }, delay);
+            }
+        },
+        throttle(func,delay){
+            let pre = 0
+            let that = this
+            return function(){
+                let now = Date.now()
+                if(now - pre > delay){
+                    func.apply(that)
+                    pre = now
+                }
+            }
+        },
+        inputChange(){
+           this.throttle(this.getSearchMag,1000)
         },
         itemTagClick(keyword){
             this.searchText = keyword
@@ -71,8 +94,11 @@ export default {
                     console.log('helo')
                 }
             })
-        }
-        
+        },
+        readBeginClick(mag){
+            console.log(mag)
+            this.$router.push({ name: 'magDetail', params: { mag_id: mag.magazine_id }})
+        },
     },
     components:{
         scroll,
@@ -110,7 +136,7 @@ export default {
                 input{
                     flex: 1;
                     height: 100%;
-                    color: #aaaaaa;
+                    color: #333333;
                     line-height: 100%;
                     border: none;
                     font-size: 16px;

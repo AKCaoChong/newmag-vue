@@ -7,10 +7,10 @@
         <maghor :magazine="magazine"  @readCodeAction="readCodeClick" @readBeignAction="readBeginClick" :hideread='true'></maghor>
         <div class="code-info">
             <div class="code-group" v-for="code in codeList" :key="code.code">
-                <div class="code-used" v-if="code.status==1">
+                <div class="code-used" v-if="code.status==200">
                     <div class="used-left">
                         <span class="used code">阅读码:{{code.code}}</span>
-                        <span class="used time">{{code.activate_time}}</span>
+                        <span class="used time">激活时间: {{code.activate_time}}</span>
                     </div>
                     <div class="used-info">
                         <img :src="code.headimg" alt="">

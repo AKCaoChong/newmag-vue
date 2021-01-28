@@ -1,6 +1,7 @@
 import axios from 'axios'
 import toast from '../components/toast'
 import qs from 'qs'
+import auth from '../utils/auth'
 const DEV_BASE_URL = "/dev_url";
 const DEBUG_BASE_URL = "https://zine.raylimobile.com/";
 const PRO_BASE_URL = "https://zine.raylimobile.com/";
@@ -33,7 +34,11 @@ service.interceptors.request.use(
         const token = ''
         token && (config.headers.Authorization = token)
         if (config.method  === 'post') {
-            console.log(config.data)
+            try {
+                config.data.token = auth.getToken()
+            } catch (error) {
+                console.log(error.message)
+            }
             config.data = qs.stringify(config.data)
         }
         return config

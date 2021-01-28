@@ -41,7 +41,7 @@ export default {
             this.$router.push({name: 'codelist'})
         },
         readBeginClick(mag){
-            console.log(mag)
+            this.$router.push({ name: 'magDetail', params: { mag_id: mag.magazine_id }})
         },
         loadMyMagazine(){
             let params = {

@@ -18,7 +18,7 @@ export default {
     border-radius: 5px;
     transform: translate(-50%,-50%);
     color: #333333;
-    font-size: 18px;
+    font-size: 16px;
     z-index: 10000;
 }
 .info{

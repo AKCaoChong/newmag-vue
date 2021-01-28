@@ -7,7 +7,7 @@
                 <p class="comment-title">{{recommend.main_title}}</p>
                 <p class="comment-time">{{recommend.sub_title}}</p>
                 <button class="read" @click="readClick(recommend.magazine_id)">开始阅读</button>
-                <wx-open-launch-weapp id="launch-btn" :username="weapp.name" :path="weapp.path" @launch="handleLaunchSuccess" @error="handleLaunchError">
+                <!-- <wx-open-launch-weapp id="launch-btn" :username="weapp.name" :path="weapp.path" @launch="handleLaunchSuccess" @error="handleLaunchError">
                     <script type="text/wxtag-template">
                         <style>
                         .read-code {
@@ -24,7 +24,7 @@
                     </style>
                         <button class="read-code">电子刊</button>
                     </script>
-                </wx-open-launch-weapp>
+                </wx-open-launch-weapp> -->
                 <!-- <button class="other">电子刊</button> -->
             </div>
             <div class="camption-group" v-if="camptions.length>0">
@@ -98,12 +98,12 @@ export default {
       loading
     },
     methods:{
-        handleLaunchSuccess(){
-            console.log("success")
-        },
-        handleLaunchError(){
-            console.log('error')
-        },
+        // handleLaunchSuccess(){
+        //     console.log("success")
+        // },
+        // handleLaunchError(){
+        //     console.log('error')
+        // },
         readClick(magId){
           console.log(magId)  
         //   this.$router.push('/address')
@@ -167,6 +167,7 @@ export default {
         wx.config(res)
     },
     mounted(){
+        
         // setTimeout(() => {
         //     this.showloading = false
         // }, 4000);
