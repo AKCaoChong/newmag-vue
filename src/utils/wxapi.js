@@ -13,7 +13,7 @@ const ShareImpl = function (option) {
     api.login.getWxConfig(params).then(response=>{
         console.log(response)
         wx.config({
-            debug: true,
+            debug: false,
             appId: response.data.appid,
             timestamp: response.data.timestamp,
             nonceStr: response.data.nonceStr,

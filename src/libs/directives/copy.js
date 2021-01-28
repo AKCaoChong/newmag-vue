@@ -1,3 +1,4 @@
+import toast from '../../components/toast'
 export default{
     bind(el,{value}){
         el.$value = value
@@ -18,7 +19,9 @@ export default{
             textarea.select()
             const result = document.execCommand('copy')
             if(result){
-                console.log('复制成功')
+                toast({
+                    text:'复制成功'
+                })
             }
             document.body.removeChild(textarea)
         }

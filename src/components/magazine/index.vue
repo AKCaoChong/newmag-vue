@@ -63,6 +63,10 @@ export default {
         font-size: 14px;
         color: #aaaaaa;
         padding: 5px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
     }
 }
 </style>

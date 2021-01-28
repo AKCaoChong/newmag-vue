@@ -75,12 +75,9 @@ export default {
       hideStyle: {
         transform: 'translateY(100%)'
       },
-      weapp:{
-        name:'gh_1d845bdf82d8',
-        path:`pages/magPreview/magPreview.html?mag_id=${this.mag_id}`
-      },
-      is_mine: true,
-      is_free: true,
+      
+      is_mine: false,
+      is_free: false,
       campaign_id: null,
       hasActive: false,
       
@@ -113,7 +110,7 @@ export default {
   },
   props:['mag_id'],
   created(){
-    
+    this.loadMagazineDetail()
   },
   activated(){
     if(this.$store.state.address.selAddressStr){
@@ -249,7 +246,12 @@ export default {
         if(res.code == 0){
           this.magazine = res.data;
           this.onePrice = res.data.price
+          this.customPrice = res.data.price
           this.is_free = res.data.is_free;
+          this.weapp = {
+            name:'gh_1d845bdf82d8',
+            path:`pages/magPreview/magPreview.html?mag_id=${this.magazine.magazine_id}&mag_title=${this.magazine.main_title}`
+          }
           if(res.data.is_mine){
             this.is_mine = res.data.is_mine;
           }
@@ -258,7 +260,8 @@ export default {
             this.campaign_id = res.data.campaign_id
             this.hasActive = true
           }
-          
+
+          this.$store.commit('share/setShareDesc',this.magazine.main_title)
         }else{
           toast({
             text: res.message

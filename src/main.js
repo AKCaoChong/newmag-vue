@@ -21,17 +21,17 @@ if(process.env.NODE_ENV == 'development'){
   Vue.use(vConsole)
   console.log(process.env.NODE_ENV)
 }else{
-  let vConsole = new VConsole()
-  Vue.use(vConsole)
-  console.log(process.env.NODE_ENV)
+  // let vConsole = new VConsole()
+  // Vue.use(vConsole)
+  // console.log(process.env.NODE_ENV)
 }
 
 let share_url = window.location.href.split("#")[0]		
-let img_url = 'http://adsite8.rayligirl.com/mini/2020/dist/img/share.png';
+let img_url = 'https://zine.raylimobile.com/20210111103419.png';
 
 shareTem({
-  shareTitle: 'RayLiNewMagazine',
-  shareDesc: 'RayLiNewMagazine',
+  shareTitle: '《瑞丽电子刊》',
+  shareDesc: store.state.share.shareDesc || '瑞丽电子刊',
   shareUrl: share_url,
   shareImg: img_url,
 });

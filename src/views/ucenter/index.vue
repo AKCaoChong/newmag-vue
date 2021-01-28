@@ -71,21 +71,21 @@ export default {
         },
       ],
       selList:[
-      {
-        img:require("@/assets/img/mine_buy.png"),
-        title:"购买纸刊",
-        id:'0'
-      },
+      // {
+      //   img:require("@/assets/img/mine_buy.png"),
+      //   title:"购买纸刊",
+      //   id:'0'
+      // },
       // {
       //   img:require("@/assets/img/mine_share.png"),
       //   title:"分享",
       //   id:'1'
       // },
-      {
-        img:require("@/assets/img/mine_connect.png"),
-        title:"联系客服",
-        id:'2'
-      },
+      // {
+      //   img:require("@/assets/img/mine_connect.png"),
+      //   title:"联系客服",
+      //   id:'2'
+      // },
       // {
       //   img:require("@/assets/img/mine_mag.png"),
       //   title:"明星电子刊",

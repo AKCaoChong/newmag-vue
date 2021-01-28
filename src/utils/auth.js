@@ -4,7 +4,7 @@ const SCOPES = ["snsapi_base","snsapi_userinfo"]
 const USER_ID = "USER_ID"
 const A_ID = "A_ID"
 const OPEN_ID = "OPEN_ID"
-
+import api from '../libs/api'
 class Auth {
   install(Vue,options){
       let auth = this
@@ -164,6 +164,19 @@ class Auth {
 
   get is_authed() {
     if (this.user && this.token) {
+      var that = this
+      
+      let params = {
+        tokens: this.token
+      }
+      
+      api.ucenter.getMyCollect(params).then(res => {
+
+        if(res.code == 401 || res.code == 402){
+            that.clearUserToken()
+            window.location.reload()
+        }
+      })  
       return true
     } else {
       return false
